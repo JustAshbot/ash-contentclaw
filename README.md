@@ -1,17 +1,15 @@
-# ContentClaw
+# ContentClaw 🚀
 
-## AI-Powered Content Generation Toolkit
+AI-powered content generation for social media
 
-A specialized tool for generating and distributing content across multiple platforms.
+## Quick Start
 
-### Features
-- TikTok Shop affiliate content generation
-- Multi-platform content scheduling
-- Performance tracking
-
-### Setup
 ```bash
-pip install contentclaw
+pip install .
+contentclaw  # Generates sample scripts
 ```
 
-
+## Features
+- TikTok-style content generation
+- Affiliate marketing script creator
+- Multi-category support
