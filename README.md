@@ -1,15 +1,22 @@
 # ContentClaw 🚀
 
-AI-powered content generation for social media
+## AI-Powered Content Generation Toolkit
 
-## Quick Start
+### Features
+- Multi-platform content generation
+- Affiliate marketing script creator
+- Intelligent campaign planning
+
+### Quick Start
 
 ```bash
+git clone https://github.com/JustAshbot/ash-contentclaw.git
+cd ash-contentclaw
 pip install .
-contentclaw  # Generates sample scripts
+contentclaw  # Generates sample campaign
 ```
 
-## Features
-- TikTok-style content generation
-- Affiliate marketing script creator
-- Multi-category support
+### Roadmap
+- [ ] Expand product catalog
+- [ ] Add API integrations
+- [ ] Performance tracking
