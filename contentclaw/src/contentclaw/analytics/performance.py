@@ -1,50 +1,42 @@
 import pandas as pd
-from typing import List, Dict
+from typing import Dict, List
 
 class PerformanceTracker:
     def __init__(self):
         self.performance_data = []
 
-    def track_content_performance(self, content_id: str, platform: str, metrics: Dict):
+    def track_performance(self, content_id: str, platform: str, metrics: Dict[str, float]):
         """
-        Track performance metrics for a piece of content
+        Track performance metrics for distributed content
         
-        :param content_id: Unique identifier for content
-        :param platform: Platform where content was distributed
-        :param metrics: Performance metrics dictionary
+        :param content_id: Unique content identifier
+        :param platform: Distribution platform
+        :param metrics: Performance metrics
         """
-        performance_entry = {
+        entry = {
             'content_id': content_id,
             'platform': platform,
+            'timestamp': pd.Timestamp.now(),
             **metrics
         }
-        self.performance_data.append(performance_entry)
+        self.performance_data.append(entry)
 
-    def generate_performance_report(self) -> pd.DataFrame:
-        """
-        Generate a performance report across all tracked content
-        
-        :return: Pandas DataFrame with performance metrics
-        """
-        df = pd.DataFrame(self.performance_data)
-        
-        # Aggregate performance by platform
-        platform_performance = df.groupby('platform').agg({
-            'views': 'mean',
-            'likes': 'mean',
-            'shares': 'mean',
-            'conversion_rate': 'mean'
-        })
-
-        return platform_performance
-
-    def identify_top_performers(self, metric: str = 'conversion_rate', top_n: int = 5) -> List[Dict]:
+    def get_top_performers(self, metric: str = 'conversion_rate', top_n: int = 3):
         """
         Identify top-performing content pieces
         
         :param metric: Metric to rank by
         :param top_n: Number of top performers to return
-        :return: List of top-performing content
+        :return: List of top performers
         """
         df = pd.DataFrame(self.performance_data)
         return df.nlargest(top_n, metric).to_dict('records')
+
+    def generate_platform_report(self):
+        """
+        Generate performance summary by platform
+        
+        :return: Performance summary DataFrame
+        """
+        df = pd.DataFrame(self.performance_data)
+        return df.groupby('platform').mean()

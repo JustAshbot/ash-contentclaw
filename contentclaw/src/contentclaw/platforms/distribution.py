@@ -2,37 +2,52 @@ import requests
 from typing import Dict, List
 
 class ContentDistributor:
-    def __init__(self):
-        self.platforms = {
-            'tiktok': self._distribute_tiktok,
-            'instagram': self._distribute_instagram,
-            'youtube_shorts': self._distribute_youtube_shorts
+    PLATFORMS = {
+        'tiktok': {
+            'base_url': 'https://api.tiktok.com/v1/publish',
+            'rate_limit': 10  # posts per hour
+        },
+        'instagram': {
+            'base_url': 'https://graph.instagram.com/me/media',
+            'rate_limit': 15  # posts per day
         }
+    }
 
-    def distribute(self, content: Dict, platforms: List[str]):
+    def __init__(self, api_keys: Dict[str, str]):
+        self.api_keys = api_keys
+
+    def distribute(self, content: Dict[str, str], platforms: List[str]):
         """
-        Distribute content across multiple platforms
+        Distribute content across specified platforms
         
-        :param content: Content dictionary
-        :param platforms: List of platforms to distribute to
+        :param content: Content to distribute
+        :param platforms: Platforms to distribute to
+        :return: Distribution results
         """
         results = {}
         for platform in platforms:
-            if platform in self.platforms:
-                results[platform] = self.platforms[platform](content)
+            if platform in self.PLATFORMS:
+                try:
+                    results[platform] = self._distribute_to_platform(platform, content)
+                except Exception as e:
+                    results[platform] = {'status': 'error', 'message': str(e)}
         return results
 
-    def _distribute_tiktok(self, content: Dict):
-        # Placeholder for TikTok API integration
-        print(f"Distributing to TikTok: {content['title']}")
-        return {"status": "simulated", "platform": "TikTok"}
+    def _distribute_to_platform(self, platform: str, content: Dict[str, str]):
+        """
+        Platform-specific distribution logic
+        
+        :param platform: Target platform
+        :param content: Content to distribute
+        :return: Distribution result
+        """
+        platform_config = self.PLATFORMS.get(platform)
+        if not platform_config:
+            raise ValueError(f"Unsupported platform: {platform}")
 
-    def _distribute_instagram(self, content: Dict):
-        # Placeholder for Instagram API integration
-        print(f"Distributing to Instagram: {content['title']}")
-        return {"status": "simulated", "platform": "Instagram"}
-
-    def _distribute_youtube_shorts(self, content: Dict):
-        # Placeholder for YouTube Shorts API integration
-        print(f"Distributing to YouTube Shorts: {content['title']}")
-        return {"status": "simulated", "platform": "YouTube Shorts"}
+        # Placeholder for actual API calls
+        return {
+            'status': 'simulated',
+            'platform': platform,
+            'content_id': hash(content['text'])
+        }
